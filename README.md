@@ -60,7 +60,8 @@ auto_create/
 ├── test-data/
 │   └── users.js                    # Test data: user accounts to create
 ├── tests/
-│   └── create-users.spec.js        # Main test suite for user creation
+│   ├── create-users.spec.js        # Main test suite for user creation
+│   └── create-role.spec.js         # Test suite for role creation and permissions
 ├── playwright.config.js            # Playwright configuration
 ├── package.json                    # Project dependencies
 └── README.md                        # This file
@@ -81,6 +82,16 @@ npx playwright test --headed
 ### Run specific test file
 ```bash
 npx playwright test tests/create-users.spec.js
+```
+
+### Run role creation test
+```bash
+npx playwright test tests/create-role.spec.js
+```
+
+### Run tests with grep pattern
+```bash
+npx playwright test -g "Create role and select all permissions"
 ```
 
 ### Run tests in debug mode
@@ -129,7 +140,15 @@ Handles user creation and management:
 - `createUser(user)` - Create a new user
 
 ### RolesPermissionsPage
-Handles role and permissions management
+Handles role and permissions management:
+- `gotoRolesPage()` - Navigate to roles page
+- `gotoCreateRolePage()` - Navigate to create new role page
+- `openEditRole(roleName)` - Open an existing role for editing
+- `toggleRoleActive(shouldBeActive)` - Enable or disable a role
+- `setPermission(sectionName, permissionName, enabled)` - Set specific permission
+- `selectAllPermissions()` - Select all permission checkboxes (handles late-loading)
+- `createRoleWithAllPermissions(roleName)` - Create a new role with all permissions
+- `saveChanges()` - Save role changes
 
 ## Configuration Details
 
@@ -162,6 +181,22 @@ Reports are stored in the [playwright-report/](playwright-report/) directory and
 - Screenshots of failures
 - Video recordings of failed tests
 - Execution timeline
+
+## Role and Permissions Testing
+
+### Creating Roles with All Permissions
+The `RolesPermissionsPage` includes a robust `selectAllPermissions()` method that:
+- Waits for all permission checkboxes to load (handles late-loading UI components)
+- Detects checkbox count stabilization before iterating
+- Handles Chakra UI checkbox components (hidden inputs with span controls)
+- Falls back to JavaScript evaluation if click events don't work
+- Dispatches proper change events to ensure React/framework state updates
+
+### Example: Create Role with All Permissions
+```javascript
+const rolesPage = new RolesPermissionsPage(page);
+await rolesPage.createRoleWithAllPermissions('Full Access Role');
+```
 
 ## Troubleshooting
 
