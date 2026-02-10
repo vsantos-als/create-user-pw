@@ -11,7 +11,7 @@ test('Create role and select all permissions', async ({ page }) => {
   await loginPage.login(ENV.adminUsername, ENV.adminPassword);
   await expect(page).toHaveURL(/dashboard/);
 
-  const roleName = `e2e-role-${Date.now()}`;
+  const roleName = "qaWebAdmin";
   await rolesPage.createRoleWithAllPermissions(roleName);
 
   // Verify the new role appears in the roles list
