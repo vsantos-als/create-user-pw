@@ -89,6 +89,17 @@ npx playwright test tests/create-users.spec.js
 npx playwright test tests/create-role.spec.js
 ```
 
+### Run role creation + create users from test-data
+This project includes a simple, linear tool-style test that first creates a role and then creates users from `test-data/users.js` (runs sequentially).
+
+```bash
+# Headed (shows browser)
+npx playwright test tests/create-role-and-user.spec.js --headed
+
+# Headless
+npx playwright test tests/create-role-and-user.spec.js
+```
+
 ### Run tests with grep pattern
 ```bash
 npx playwright test -g "Create role and select all permissions"
@@ -116,9 +127,11 @@ User test data is defined in [test-data/users.js](test-data/users.js). Each user
   lastName: 'last-name',
   email: 'email@domain.com',
   password: 'password',
-  role: 'Role-Name'
+   role: 'Role-Name'
 }
 ```
+
+Note: When running `tests/create-role-and-user.spec.js` the script will create a new role and assign that generated role name to each user created from this file. Emails and usernames are suffixed to avoid collisions.
 
 ### Managing Test Users
 
