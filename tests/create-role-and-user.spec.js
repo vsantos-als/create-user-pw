@@ -20,19 +20,19 @@ test('create role then create users from test-data', async ({ page }) => {
 
   // Create a unique role
   const ts = Date.now();
-  const roleName = `qa-role-${ts}`;
+  const roleName = "qaWebAdmin";
   console.log('Creating role:', roleName);
   await rolesPage.createRoleWithAllPermissions(roleName);
 
   // Create users from test-data sequentially
   for (const template of users) {
     const user = {
-      username: template.username || `qauser-${ts}`,
-      employeeId: template.employeeId || `eid-${ts}`,
-      firstName: template.firstName || 'E2E',
-      lastName: template.lastName || 'User',
-      email: template.email || `qa.${ts}@example.com`,
-      password: template.password || ENV.defaultUserPassword,
+      username: template.username,
+      employeeId: template.employeeId,
+      firstName: template.firstName,
+      lastName: template.lastName,
+      email: template.email,
+      password: template.password,
       role: roleName,
     };
 
